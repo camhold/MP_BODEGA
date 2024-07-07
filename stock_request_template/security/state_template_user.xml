@@ -1,0 +1,5 @@
+<odoo>
+    <record id="state_template_stock_request" model="res.groups">
+        <field name="name">Uso de plantilla de solicitudes de existencias</field>
+    </record>
+</odoo>

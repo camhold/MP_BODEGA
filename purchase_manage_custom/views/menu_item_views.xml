@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.menu" id="purchase.menu_purchase_config">
+        <field name="groups_id" eval="[(3, ref('purchase_manage_custom.group_purchase_user_purchase'))]" />
+    </record>
+    <record model="ir.ui.menu" id="stock.menu_warehouse_report">
+        <field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]" />
+    </record>
+</odoo>

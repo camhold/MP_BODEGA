@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_move_report_tree" model="ir.ui.view">
+        <field name="name">stock.move.tree</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="route_request_id" widget="many2one" />
+            </xpath>
+            <xpath expr="//field[@name='product_uom']" position="after">
+                <field name="product_single_standard_price"/>
+                <field name="total_cost_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_stock_move_line_tree" model="ir.ui.view">
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='qty_done']" position="after">
+                <field name="qty_on_hand"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_picking_quantity_on_hand" model="ir.ui.view">
+        <field name="name">stock.picking.quantity_on_hand</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']"
+                    position="after">
+                <field name="qty_on_hand"/>
+            </xpath>
+            <xpath expr="//field[@name='analytic_account_id']" position='attributes'>
+                <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='analytic_tag_ids']" position='attributes'>
+                <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_stock_move_line_detailed_tree" model="ir.ui.view">
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='qty_done']" position="after">
+                <field name="qty_on_hand"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_id']" position="after">
+                <field name="product_single_standard_price"/>
+                <field name="total_cost_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_form_analytic" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="default_analytic_tag_ids"
+                       options="{'no_create': True, 'no_edit': True, 'no_open': True}"
+                       widget="many2many_tags"/>
+                <field name="default_analytic_account_id"
+                       options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+                <button
+                    name="add_default_account_and_tag_analytic_account"
+                    string="Agregar cuentas y etiquetas analiticas por defecto"
+                    type="object"
+                    class="btn btn-primary"
+                    confirm="Seguro de asignar cuentas y etiquetas analiticas por default?"
+                />
+            </xpath>
+            <xpath
+                expr="//page[@name='detailed_operations']"
+                position="replace"
+            >
+                <page string="Detailed Operations"
+                    name="detailed_operations">
+                    <field name="move_line_nosuggest_ids"
+                           attrs="{'readonly': ['|', ('state', '=', 'cancel'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)], 'invisible': [('show_reserved', '=', True)]}"
+                           context="{'tree_view_ref': 'stock.view_stock_move_line_detailed_operation_tree', 'default_picking_id': id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id, 'default_company_id': company_id}"/>
+                    <field name="move_line_ids_without_package"
+                           attrs="{'readonly': ['|', ('state', '=', 'cancel'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)], 'invisible': [('show_reserved', '=', False)]}"
+                           context="{'tree_view_ref': 'stock.view_stock_move_line_detailed_operation_tree', 'default_picking_id': id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id, 'default_company_id': company_id}"/>
+                    <field name="package_level_ids_details"
+                           context="{'default_location_id': location_id, 'default_location_dest_id': location_dest_id, 'default_company_id': company_id}"
+                           attrs="{'readonly': [('state', '=', 'done')], 'invisible': ['|', ('picking_type_entire_packs', '=', False), ('show_operations', '=', False)]}" />
+                    <button class="oe_highlight" name="action_put_in_pack" type="object" string="Put in Pack" attrs="{'invisible': [('state', 'in', ('draft', 'done', 'cancel'))]}" groups="stock.group_tracking_lot" data-hotkey="shift+g"/>
+                </page>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_move_line_detailed_tree_reconcile" model="ir.ui.view">
+        <field name="name">stock.move.line.detailed.tree (in stock_analytic_account)</field>
+        <field name="model">stock.move.line</field>
+        <field
+            name="inherit_id"
+            ref="stock_analytic.view_move_line_detailed_tree"
+        />
+        <field name="arch" type="xml">
+            <field name="analytic_account_id" position="after">
+                <field name="analytic_tag_ids"  widget="many2many_tags"
+                       options="{'no_create': True, 'no_open': True}"/>
+            </field>
+            <xpath expr="//field[@name='analytic_account_id']" position='attributes'>
+                <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_stock_quant_tree_in_date" model="ir.ui.view">
+        <field name="name">stock.quant.inherit.tree</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="in_date"/>
+            </xpath>
+        </field>
+    </record>
+	<record id="action_compute_set_analytic_account_operations_detailed" model="ir.actions.server">
+    	<field name="name">Agregar cuentas analiticas a Operaciones detalladas</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="code">records.add_detailed_operation_analytic()</field>
+    </record>
+	<record id="action_compute_set_analytic_account_operations" model="ir.actions.server">
+    	<field name="name">Agregar cuentas analiticas a Operaciones</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="code">records.add_operation_analytic()</field>
+    </record>
+</odoo>

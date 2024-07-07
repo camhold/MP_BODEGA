@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="history_moves_tree_view" model="ir.ui.view">
+        <field name="name">stock.picking.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="location_id"/>
+                <field name="location_id"/>
+                <field name="location_dest_id"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="scheduled_date"/>
+                <field name="origin"/>
+                <field name="picking_type_id"/>
+                <field name="batch_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="stock_location_report_tree" model="ir.ui.view">
+        <field name="name">stock.location.tree</field>
+        <field name="model">stock.location</field>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <tree string="Stock Location" decoration-warning="in_date==False">
+                <button name="get_history_moves" string="Ver movimientos" type="object" class="btn btn-primary"/>
+                <field name="active" invisible="1"/>
+                <field name="in_date"/>
+                <field name="filter_init_date" invisible="1"/>
+                <field name="filter_end_date" invisible="1"/>
+                <field name="complete_name" string="Location"/>
+                <field name="usage"/>
+                <field name="storage_category_id" attrs="{'readonly': [('usage', '!=', 'internal')]}" groups="stock.group_stock_storage_categories"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="location_report_action" model="ir.actions.act_window">
+        <field name="name">Location Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.location</field>
+        <field name="view_mode">tree, form</field>
+        <field name="view_id" ref="stock_location_report_tree"/>
+        <field name="target">current</field>
+        <field name="domain">[
+            ('complete_name', 'ilike', 'Holdc/stock%'),
+            ('in_date', '>=', filter_init_date),
+            ('in_date', '&lt;=', filter_end_date),
+        ]</field>
+        <field name="context">{
+            'usage_location_ids': active_ids
+        }</field>
+    </record>
+</odoo>

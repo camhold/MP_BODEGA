@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="form_stock_request_order_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-12 text-left">
+                                <h1>Pedido de existencias: <span t-field="o.name"/></h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                Fecha prevista: <br/><span t-field="o.expected_date"/><br/>
+                            </div>
+                            <div class="col-6">
+                                Almacen: <br/><span t-field="o.warehouse_id"/><br/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                Politica de entrega: <br/><span t-field="o.picking_policy"/><br/>
+                            </div>
+                            <div class="col-6">
+                                Ubicacion: <br/><span t-field="o.location_id"/><br/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                Ruta por default: <br/><span t-field="o.default_route_id"/><br/>
+                            </div>
+                            <div class="col-6">
+                                Cuenta analitica por defecto: <br/><span t-field="o.default_analytic_account_id"/><br/>
+                            </div>
+                        </div>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Unidad de medida</th>
+                                    <th>Ruta</th>
+                                    <th>Cantidad</th>
+                                    <th>Cantidad Disponible</th>
+                                    <th>Cantidad Hecha</th>
+                                    <th>Estatus en inventario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.stock_request_ids" t-as="line_id">
+                                    <tr>
+                                        <td><t t-esc="line_id.product_id.display_name"/></td>
+                                        <td><t t-esc="line_id.product_uom_id.display_name"/></td>
+                                        <td><t t-esc="line_id.route_id.display_name"/></td>
+                                        <td><t t-esc="line_id.product_uom_qty"/></td>
+                                        <td><t t-esc="line_id.location_src_qty_available"/></td>
+                                        <td><t t-esc="line_id.qty_done"/></td>
+                                        <td><t t-esc="line_id.product_stock_state"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <h1>Documento para uso interno</h1>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+     <record id="action_report_stock_request_form" model="ir.actions.report">
+        <field name="name">Reporte de Solicitud de Existencias</field>
+        <field name="model">stock.request.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">stock_request_template.form_stock_request_order_report</field>
+        <field name="report_file">stock_request_template.form_stock_request_order_report</field>
+        <field name="binding_model_id" ref="model_stock_request_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

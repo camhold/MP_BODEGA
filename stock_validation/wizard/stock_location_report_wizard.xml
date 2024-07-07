@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="stock_location_report_form_view" model="ir.ui.view">
+        <field name="name">stock.location.report.wizard</field>
+        <field name="model">stock.location.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="init_date_report" />
+                        <field name="end_date_report" />
+                     </group>
+                </sheet>
+                <footer>
+                    <button string="Confirmar" type="object" name="confirm_action" class="btn-primary"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="report_location_information_wizard" model="ir.actions.act_window">
+        <field name="name">Informe ubicaciones sin movimientos</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.location.report.wizard</field>
+        <field name="view_id" ref="stock_location_report_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_action_location_report_date_report_location"
+              action="report_location_information_wizard"
+              parent="stock_request.menu_stock_request_consult_inventory"
+              groups="stock_request.group_stock_request_manager"
+              name="Informe ubicaciones sin movimientos" sequence="135"/>
+
+    <menuitem id="menu_action_location_report_date_report"
+              action="report_location_information_wizard" parent="stock.menu_stock_config_settings"
+              groups="stock.group_stock_manager" name="Informe ubicaciones sin movimientos" sequence="35"/>
+
+    <menuitem id="menu_action_location_report_date_report_gestion"
+              action="report_location_information_wizard"
+              parent="mp_gestion.mp_gestion_menu_root"
+              name="Informe ubicaciones sin movimientos" sequence="35"/>
+
+    <menuitem id="menu_action_location_report_date_report_location_gestion"
+              action="report_location_information_wizard"
+              parent="menu_action_location_report_date_report_gestion"
+              name="Informe ubicaciones sin movimientos" sequence="135"/>
+
+</odoo>

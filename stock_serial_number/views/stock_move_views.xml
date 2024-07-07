@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_stock_move_operations" model="ir.ui.view">
+        <field name="name">stock.move.operations.form</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_stock_move_operations" />
+        <field name="arch" type="xml">
+            <field name="move_line_ids" position="before">
+                <button class="btn-primary" name="btn_add_serial_number" type="object"
+                        string="Agregar numeros de serie"/>
+
+                <field name="attachment_file"
+                    string="Selecciona el archivo de numeros de serie"
+                     options="{'accepted_file_extensions': '.xlsx'}"
+                       filename="attachment_name">Sube tu archivo</field>
+
+                <field name="attachment_name" invisible="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

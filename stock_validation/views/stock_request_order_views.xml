@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="stock_request_order_default_tag_form">
+        <field name="name">stock.request.order.default.tag.form</field>
+        <field name="model">stock.request.order</field>
+        <field name="inherit_id" ref="stock_request.stock_request_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_policy']" position="after">
+                <field name="default_route_id"
+                       options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+                <button
+                    name="add_default_route"
+                    string="Agregar ruta por defecto"
+                    type="object"
+                    class="btn btn-primary"
+                    confirm="Seguro de asignar ruta por default?"
+                    groups="stock_request.group_stock_request_user,stock_request.group_stock_request_manager"
+                />
+            </xpath>
+            <xpath expr="//field[@name='default_analytic_account_id']" position="after">
+                <field name="default_analytic_tag_ids"
+                       options="{'no_create': True, 'no_edit': True, 'no_open': True}"
+                       widget="many2many_tags"/>
+                <button
+                    name="add_default_account_and_tag_analytic_account"
+                    string="Agregar cuentas y etiquetas analiticas por defecto"
+                    type="object"
+                    class="btn btn-primary"
+                    confirm="Seguro de asignar cuentas y etiquetas analiticas por default?"
+                    groups="stock_request.group_stock_request_user,stock_request.group_stock_request_manager"
+                />
+            </xpath>
+            <xpath expr="//field[@name='stock_request_ids']/tree/field[@name='analytic_tag_ids']"
+                   position="attributes">
+                <attribute name="invisible">False</attribute>
+                <attribute name="column_invisible">0</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_stock_quant_tree_fields" model="ir.ui.view">
+        <field name="name">stock.quant.inherit.fields</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field name="default_code"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_id']" position="after">
+                <field name="evaluation"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

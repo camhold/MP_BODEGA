@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+  <record id="purchase_order_view_form_inherit_term" model="ir.ui.view">
+    <field name="model">purchase.order</field>
+    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//page[@name='purchase_delivery_invoice']" position="inside">
+                      <div>"Términos y condiciones
+1. El Cliente y el Proveedor conocen y aceptan el detalle de los productos y/o servicios descritos en la cotización enviada por el Proveedor.
+2. Una vez cumplida la orden de compra, el Cliente verificará su cumplimiento íntegro y emitirá al Proveedor un documento en que de cuenta de la recepción conforme de la obra. Sólo una vez recibida conforme la obra, se hará exigible el segundo pago, contra factura.
+3. Sin perjuicio de lo anterior, el Proveedor deberá cumplir con la orden oportunamente en la fecha pactada según la cotización, a menos que concurra caso fortuito o fuerza mayor. En caso de atraso en el cumplimiento imputable al Proveedor, se devengará por ese sólo hecho una multa diaria a favor del Cliente equivalente al 1% del valor total pactado por cada día de atraso, el cual se descontará del segundo pago que corresponde efectuar al momento de recibir conforme la obra.
+4. Los productos y/o servicios tendrán una garantía de 12 meses, debiendo el Proveedor concurrir a efectuar las reparaciones y/o modificaciones que sean necesarias a requerimiento del Cliente, en caso de que las fallas se produzcan por la mala calidad del producto y/o servicio, y no sean imputables al Cliente.
+5. Lo anterior no obsta el ejercicio de las acciones legales que correspondan en su caso, las cuales serán de competencia de los tribunales ordinarios de justicia con asiento en la comuna de Santiago.
+6. El inicio en la ejecución de obras, prestación del servicio y/o entrega de productos da cuenta de la aceptación del Proveedor del presente documento." </div>
+        </xpath>
+    </field>
+  </record>
+
+</odoo>

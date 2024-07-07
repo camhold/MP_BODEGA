@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_request_order_template,stock_request_template,model_stock_request_order_template,state_template_stock_request,1,1,1,1
+access_stock_request_order_template_line,stock_request_template_line,model_stock_request_order_template_line,state_template_stock_request,1,1,1,1
+access_stock_order_template_wizard,stock_order_template_wizard,model_stock_order_template_wizard,base.group_user,1,1,1,1

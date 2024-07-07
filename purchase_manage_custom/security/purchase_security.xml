@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_purchase_user_purchase" model="res.groups">
+        <field name="name">Usuario Lector</field>
+        <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_manager'))]"/>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="purchase.group_purchase_manager" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_purchase_user_purchase'))]"/>
+    </record>
+</odoo>

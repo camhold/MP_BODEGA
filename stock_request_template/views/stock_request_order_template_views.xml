@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_form_inherit" model="ir.ui.view">
+        <field name="name">stock.request.order.view.form.inherit</field>
+        <field name="model">stock.request.order</field>
+        <field name="inherit_id" ref="stock_request.stock_request_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button
+                    name="btn_use_template"
+                    string="Usar plantilla"
+                    type="object"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_request_order_template_form" model="ir.ui.view">
+        <field name="name">stock.template.form.stock.request</field>
+        <field name="model">stock.request.order.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="code" />
+                        </group>
+                        <group>
+                            <field name="description" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="picking_policy" readonly="1" invisible="1"/>
+                            <field
+                                name="default_analytic_tag_ids" widget="many2many_tags"
+                            />
+                            <field
+                                name="default_route_id"
+                            />
+                            <field
+                                name="analytic_account_id"
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="warehouse_id"
+                                widget="selection"
+                                groups="stock.group_stock_multi_locations"
+                            />
+                            <field
+                                name="location_id"
+                            />
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                                options="{'no_create': True}" readonly="1"
+                            />
+                            <field
+                                name="allow_virtual_location"
+                                invisible="1"
+                            />
+                            <button
+                                name="add_default_route"
+                                string="Agregar ruta por defecto"
+                                type="object"
+                                class="btn btn-primary"
+                                confirm="Seguro de asignar ruta por default?"
+                            />
+                            <button
+                                name="add_default_account_and_tag_analytic_account"
+                                string="Agregar cuentas y etiquetas analiticas por defecto"
+                                type="object"
+                                class="btn btn-primary"
+                                confirm="Seguro de asignar cuentas y etiquetas analiticas por default?"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lineas">
+                            <field name="line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="product_id"
+                                           options="{'no_open': True, 'no_create': True}"/>
+                                    <field
+                                        name="route_id"
+                                        options="{'no_create': True}"
+                                        groups="stock.group_stock_multi_locations"
+                                    />
+                                    <field name="route_ids" invisible="1" readonly=""/>
+                                    <field name="product_uom_qty" />
+                                    <field name="analytic_account_id"
+                                           options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="analytic_tag_ids" widget="many2many_tags" invisible="0"
+                                           options="{'no_open': True, 'no_create': True}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_stock_template_tree_stock_request" model="ir.ui.view">
+        <field name="name">stock.template.tree.stock.request</field>
+        <field name="model">stock.request.order.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="stock_request_template_action">
+        <field name="name">Plantilla de solicitudes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.request.order.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids"
+            eval="[(5,0,0),
+            (0,0,{'view_mode':'tree', 'view_id': ref('view_stock_template_tree_stock_request')}),
+            (0,0,{'view_mode':'form', 'view_id': ref('stock_request_order_template_form')})]"
+        />
+    </record>
+    <menuitem
+        id="menu_stock_request_template"
+        parent="stock_request.menu_stock_request_root"
+        name="Plantillas"
+        sequence="50"
+    />
+    <menuitem
+        id="menu_stock_request_template_order"
+        parent="menu_stock_request_template"
+        name="Solicitudes de existencias"
+        action="stock_request_template_action"
+    />
+</odoo>
